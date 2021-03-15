@@ -1,0 +1,23 @@
+POST http://localhost:3333/users
+Content-Type: application/json
+
+{
+  "name": "Igor Joao",
+  "username": "lamas100"
+}
+###
+GET http://localhost:3333/users/8275faac-1ec1-42c1-9654-8e8b4ebc22ea
+Content-Type: application/json
+
+###
+POST http://localhost:3333/todos
+Content-Type: application/json
+username: lamas250
+
+{
+  "title": "222222",
+  "deadline": "2020-10-10"
+}
+###
+GET http://localhost:3333/todos/d0abb376-3cc0-4c24-a784-8b77442e470d
+Content-Type: application/json

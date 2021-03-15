@@ -7,14 +7,36 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const users = [];
+const users = [
+  {
+    "id": "8275faac-1ec1-42c1-9654-8e8b4ebc22ea",
+    "name": "Igor Lamas",
+    "username": "lamas250",
+    "pro": false,
+    "todos": [
+      {
+        "id": "d4b71f0b-9180-498e-840e-0d12149764e6",
+        "title": "11111111",
+        "deadline": "2020-10-10T00:00:00.000Z",
+        "done": false,
+        "created_at": "2021-03-15T00:19:59.212Z"
+      }
+    ]
+  }
+];
 
 function checksExistsUserAccount(request, response, next) {
-  // Complete aqui
+  const {username} = request.headers;
+
+  const user = users.find(u => u.username === username);
+
+  request.user = user;
+  next();  
 }
 
 function checksCreateTodosUserAvailability(request, response, next) {
-  // Complete aqui
+  const {user} = request;
+  next();
 }
 
 function checksTodoExists(request, response, next) {
@@ -22,7 +44,14 @@ function checksTodoExists(request, response, next) {
 }
 
 function findUserById(request, response, next) {
-  // Complete aqui
+  const {id} = request.params;
+
+  const user = users.find(u => u.id === id);
+
+  if(!user) return response.status(404).json({message: "User not found"});
+
+  request.user = user;
+  next();
 }
 
 app.post('/users', (request, response) => {
