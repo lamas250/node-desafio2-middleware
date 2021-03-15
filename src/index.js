@@ -8,21 +8,21 @@ app.use(express.json());
 app.use(cors());
 
 const users = [
-  {
-    "id": "8275faac-1ec1-42c1-9654-8e8b4ebc22ea",
-    "name": "Igor Lamas",
-    "username": "lamas250",
-    "pro": false,
-    "todos": [
-      {
-        "id": "d4b71f0b-9180-498e-840e-0d12149764e6",
-        "title": "11111111",
-        "deadline": "2020-10-10T00:00:00.000Z",
-        "done": false,
-        "created_at": "2021-03-15T00:19:59.212Z"
-      }
-    ]
-  }
+  // {
+  //   "id": "8275faac-1ec1-42c1-9654-8e8b4ebc22ea",
+  //   "name": "Igor Lamas",
+  //   "username": "lamas250",
+  //   "pro": false,
+  //   "todos": [
+  //     {
+  //       "id": "d4b71f0b-9180-498e-840e-0d12149764e6",
+  //       "title": "11111111",
+  //       "deadline": "2020-10-10T00:00:00.000Z",
+  //       "done": false,
+  //       "created_at": "2021-03-15T00:19:59.212Z"
+  //     }
+  //   ]
+  // }
 ];
 
 function checksExistsUserAccount(request, response, next) {
@@ -30,17 +30,38 @@ function checksExistsUserAccount(request, response, next) {
 
   const user = users.find(u => u.username === username);
 
+  if(!user) return response.status(404).json("User not found");
+  
   request.user = user;
   next();  
 }
 
 function checksCreateTodosUserAvailability(request, response, next) {
   const {user} = request;
+
+  if(user.pro === false){
+    if(user.todos.length >= 10){
+      return response.status(403).json({message: "Seu free acabou"});
+    }
+  }
+
   next();
 }
 
 function checksTodoExists(request, response, next) {
-  // Complete aqui
+  const {username} = request.headers;
+  const {id} = request.params;
+  
+  if(!(validate(id))) return response.status(400).json("N é uuid");
+
+  const user = users.find(u => u.username === username);
+  if(!user) return response.status(404).json({error: "User nout ofund"});
+  const todo = user.todos.find(t => t.id === id);
+  if(!todo) return response.status(404).json({error: "Todo nout ofund"});
+ 
+  request.user = user;
+  request.todo = todo;
+  next();
 }
 
 function findUserById(request, response, next) {

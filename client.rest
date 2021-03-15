@@ -15,9 +15,15 @@ Content-Type: application/json
 username: lamas250
 
 {
-  "title": "222222",
+  "title": "56432342",
   "deadline": "2020-10-10"
 }
 ###
-GET http://localhost:3333/todos/d0abb376-3cc0-4c24-a784-8b77442e470d
+PUT http://localhost:3333/todos/d4b71f0b-9180-498e-840e-0d12149764e6
 Content-Type: application/json
+username: lamas250
+
+{
+  "title": "Editado checksEcistidsTODO OK",
+  "deadline": "2020-10-10"
+}
